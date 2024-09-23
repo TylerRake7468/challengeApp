@@ -1,7 +1,8 @@
 module Api
     module V1
         class ChallengesController < ApplicationController
-            before_action :set_challenge, only: [:update, :show, :destory]
+            before_action :authenticate_user!, only: [:create, :update, :destroy]
+            before_action :set_challenge, only: [:update, :show, :destroy]
 
             def index
                 @challenges = Challenge.all
@@ -12,11 +13,11 @@ module Api
             end
 
             def create
-                challenge = Challenge.new(challenge_params)
-                if challenge.save
-                    render json: {message: "Challenge create successfully.", data: challenge}
+                @challenge = current_user.challenges.build(challenge_params)
+                if @challenge.save
+                    render json: {message: "Challenge create successfully.", data: @challenge}
                 else
-                    render json: {message: "Failed to create challenge.", data: challenge.errors}
+                    render json: {message: "Failed to create challenge.", data: @challenge.errors}
                 end
             end
 
