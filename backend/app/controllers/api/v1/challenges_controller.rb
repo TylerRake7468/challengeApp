@@ -59,7 +59,7 @@ module Api
             end
 
             def authorize_admin
-                return render json: {message: "Forbidden Action"} unless current_user.email == "admin@gmail.com"
+                return render json: {message: "Forbidden Action"} unless current_user.email == ENV['ADMIN_EMAIL']
             end
         end
     end
