@@ -1,6 +1,7 @@
 import PropType from 'prop-types'
 import { useState } from 'react';
 import { validateEmail, validatePassword } from '../utilities/validations';
+import { Link } from 'react-router-dom';
 
 const Authentication = ({pageType}) =>{
     const initialErrorsState = {
@@ -25,10 +26,16 @@ const Authentication = ({pageType}) =>{
 
     const handleSubmit = (e) =>{
         if(!validateEmail(email)){
-
+            setErrors({
+                ...errors,
+                email: "Invalid Email"
+            });
         }
         if(!validatePassword(password)){
-
+            setErrors({
+                ...errors,
+                password: "Password should be at least 6 characters long."
+            });
         }
         // make api call if success
     }
@@ -42,14 +49,27 @@ const Authentication = ({pageType}) =>{
                         (pageType === PageType.LOGIN) ? 'Login' : 'Sign Up'
                     }
                     </h3>
-
-                    <form onSubmit={handleSubmit} className='mt-10 max-w-64 flex flex-col gap-6'>
+                    {
+                        (pageType === PageType.LOGIN) ?
+                            <p>Not a user? 
+                                <Link to="/register" className='ms-2 underline'>
+                                    Register
+                                </Link>
+                            </p>
+                            :
+                            <p>Already register?
+                                <Link to="/login" className='ms-2 underline'>
+                                    Login
+                                </Link>
+                            </p>
+                    }
+                    <form onSubmit={handleSubmit} className='mt-10 max-w-96 flex flex-col gap-6'>
                         <div>
                             <input 
                                 name="email" 
                                 type='email' 
                                 placeholder='Enter email' 
-                                className='py-2 border border-gray-600 rounded px-3'
+                                className='py-2 w-full border border-gray-600 rounded px-3'
                                 onChange={handleEmailChange}
                                 value={email}
                             />
@@ -61,7 +81,7 @@ const Authentication = ({pageType}) =>{
                                 name="password" 
                                 type='password' 
                                 placeholder='Enter password' 
-                                className='py-2 border border-gray-600 rounded px-3'
+                                className='py-2 w-full border border-gray-600 rounded px-3'
                                 onChange={handlePasswordChange}
                                 value={password}
                             />
