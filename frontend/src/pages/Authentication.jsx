@@ -2,6 +2,7 @@ import PropType from 'prop-types'
 import { useState } from 'react';
 import { validateEmail, validatePassword } from '../utilities/validations';
 import { Link } from 'react-router-dom';
+import { registerApi } from '../apis/authentication';
 
 const Authentication = ({pageType}) =>{
     const initialErrorsState = {
@@ -15,29 +16,40 @@ const Authentication = ({pageType}) =>{
 
     const handleEmailChange = (e) => {
         setEmail(e.target.value);
-        console.log(email);
     }
 
- 
     const handlePasswordChange = (e) => {
         setPassword(e.target.value);
-        console.log(password);
     }
 
-    const handleSubmit = (e) =>{
+    const handleSubmit = async (e) =>{
+        e.preventDefault();
+        let newErrors = {};
         if(!validateEmail(email)){
-            setErrors({
-                ...errors,
+            newErrors = {
+                ...newErrors,
                 email: "Invalid Email"
-            });
+            };
         }
         if(!validatePassword(password)){
-            setErrors({
-                ...errors,
+            newErrors = {
+                ...newErrors,
                 password: "Password should be at least 6 characters long."
-            });
+            };
         }
-        // make api call if success
+        setErrors(newErrors);
+        // API CALLS
+        if(pageType === PageType.LOGIN){
+        } else{
+            const [result, error] = await registerApi({
+                user:{
+                    email: email,
+                    password: password
+                }
+            })
+            console.log("result:::", result);
+            console.log("error:::", error);
+        }
     }
 
     return (
