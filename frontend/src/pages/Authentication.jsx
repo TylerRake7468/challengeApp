@@ -2,9 +2,11 @@ import PropType from 'prop-types'
 import { useState } from 'react';
 import { validateEmail, validatePassword } from '../utilities/validations';
 import { Link } from 'react-router-dom';
-import { registerApi } from '../apis/authentication';
+import { registerApi, loginApi } from '../apis/authentication';
+import { useNavigate } from 'react-router-dom';
 
 const Authentication = ({pageType}) =>{
+    const navigate = useNavigate();
     const initialErrorsState = {
         email: '',
         password: '',
@@ -25,6 +27,7 @@ const Authentication = ({pageType}) =>{
     const handleSubmit = async (e) =>{
         e.preventDefault();
         let newErrors = {};
+
         if(!validateEmail(email)){
             newErrors = {
                 ...newErrors,
@@ -40,6 +43,13 @@ const Authentication = ({pageType}) =>{
         setErrors(newErrors);
         // API CALLS
         if(pageType === PageType.LOGIN){
+            const [result, error] = await loginApi({
+                user:{
+                    email: email,
+                    password: password
+                }
+            })
+            handleResponse([result, error])
         } else{
             const [result, error] = await registerApi({
                 user:{
@@ -47,8 +57,20 @@ const Authentication = ({pageType}) =>{
                     password: password
                 }
             })
-            console.log("result:::", result);
-            console.log("error:::", error);
+            handleResponse([result, error])
+        }
+    }
+    const handleResponse = ([result, error]) =>{
+        if(error){
+            setErrors({
+                ...errors,
+                api: error
+            })
+        }else{
+            const message = result.message;
+            const user = result.data;
+            
+            navigate("/");
         }
     }
 
@@ -102,6 +124,7 @@ const Authentication = ({pageType}) =>{
                         <button type='submit' className='bg-indigo-500 rounded px-3 py-2 hover:bg-indigo-600 text-white'>
                             {(pageType === PageType.LOGIN) ? 'Login' : 'Sign Up'} 
                         </button>
+                        { errors.api && <p className='text-sm text-red-500 text-medium'>{errors.api}</p> }
                     </form>
                 </div>
             </div>
