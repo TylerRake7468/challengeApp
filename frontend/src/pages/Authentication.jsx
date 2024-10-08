@@ -2,8 +2,12 @@ import PropType from 'prop-types'
 import { useState } from 'react';
 import { validateEmail, validatePassword } from '../utilities/validations';
 import { Link } from 'react-router-dom';
+<<<<<<< HEAD
 import { registerApi, loginApi } from '../apis/authentication';
 import { useNavigate } from 'react-router-dom';
+=======
+import { loginApi, registerApi } from '../apis/authentication';
+>>>>>>> react_start
 
 const Authentication = ({pageType}) =>{
     const navigate = useNavigate();
@@ -49,7 +53,12 @@ const Authentication = ({pageType}) =>{
                     password: password
                 }
             })
+<<<<<<< HEAD
             handleResponse([result, error])
+=======
+            console.log("result:::", result);
+            console.log("error:::", error);
+>>>>>>> react_start
         } else{
             const [result, error] = await registerApi({
                 user:{
