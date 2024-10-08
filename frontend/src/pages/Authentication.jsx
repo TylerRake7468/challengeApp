@@ -2,7 +2,7 @@ import PropType from 'prop-types'
 import { useState } from 'react';
 import { validateEmail, validatePassword } from '../utilities/validations';
 import { Link } from 'react-router-dom';
-import { registerApi } from '../apis/authentication';
+import { loginApi, registerApi } from '../apis/authentication';
 
 const Authentication = ({pageType}) =>{
     const initialErrorsState = {
@@ -40,6 +40,14 @@ const Authentication = ({pageType}) =>{
         setErrors(newErrors);
         // API CALLS
         if(pageType === PageType.LOGIN){
+            const [result, error] = await loginApi({
+                user:{
+                    email: email,
+                    password: password
+                }
+            })
+            console.log("result:::", result);
+            console.log("error:::", error);
         } else{
             const [result, error] = await registerApi({
                 user:{
