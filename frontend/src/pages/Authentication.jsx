@@ -60,13 +60,14 @@ const Authentication = ({pageType}) =>{
             handleResponse([result, error])
         }
     }
-    const handleResponse = ([result, error]) =>{
+    const handleResponse = async([response, error]) =>{
         if(error){
             setErrors({
                 ...errors,
                 api: error
             })
         }else{
+            const result = await response.json();
             const message = result.message;
             const user = result.data;
             
