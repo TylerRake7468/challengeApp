@@ -1,12 +1,21 @@
 import PropType from 'prop-types'
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { validateEmail, validatePassword } from '../utilities/validations';
 import { Link } from 'react-router-dom';
 import { registerApi, loginApi } from '../apis/authentication';
 import { useNavigate } from 'react-router-dom';
+import { useCookies } from 'react-cookie';
 
 const Authentication = ({pageType}) =>{
+    const [cookies, setCookie] = useCookies(['jwt']);
     const navigate = useNavigate();
+
+    useEffect(()=>{
+        if(cookies.jwt){
+            navigate('/');
+        }
+    },[])
+
     const initialErrorsState = {
         email: '',
         password: '',
@@ -41,23 +50,29 @@ const Authentication = ({pageType}) =>{
             };
         }
         setErrors(newErrors);
+        const hasErrors = Object.values(newErrors).some(error=> error!='');
+        if(hasErrors){
+            return;
+        }
+
+
         // API CALLS
         if(pageType === PageType.LOGIN){
-            const [result, error] = await loginApi({
+            const [response, error] = await loginApi({
                 user:{
                     email: email,
                     password: password
                 }
             })
-            handleResponse([result, error])
+            handleResponse([response, error])
         } else{
-            const [result, error] = await registerApi({
+            const [response, error] = await registerApi({
                 user:{
                     email: email,
                     password: password
                 }
             })
-            handleResponse([result, error])
+            handleResponse([response, error])
         }
     }
     const handleResponse = async([response, error]) =>{
@@ -67,10 +82,10 @@ const Authentication = ({pageType}) =>{
                 api: error
             })
         }else{
-            const result = await response.json();
-            const message = result.message;
-            const user = result.data;
-            
+            const jwt = response.headers.get('Authorization');
+            // const result = await response.json();
+            // const message = result.message;
+            setCookie('jwt', jwt);
             navigate("/");
         }
     }
