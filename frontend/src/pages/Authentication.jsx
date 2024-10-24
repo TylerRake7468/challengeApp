@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { registerApi, loginApi } from '../apis/authentication';
 import { useNavigate } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
+import Button from '../elements/Button';
 
 const Authentication = ({pageType}) =>{
     const [cookies, setCookie] = useCookies(['jwt']);
@@ -113,7 +114,7 @@ const Authentication = ({pageType}) =>{
                                 </Link>
                             </p>
                     }
-                    <form onSubmit={handleSubmit} className='mt-10 max-w-96 flex flex-col gap-6'>
+                    <form className='mt-10 max-w-96 flex flex-col gap-6'>
                         <div>
                             <input 
                                 name="email" 
@@ -137,7 +138,10 @@ const Authentication = ({pageType}) =>{
                             />
                             { errors.password && <p className='text-sm text-red-500 text-medium'>{errors.password}</p> }
                         </div>
-                        <button type='submit' className='bg-indigo-500 rounded px-3 py-2 hover:bg-indigo-600 text-white'>
+                        <Button onClick={handleSubmit}>
+                            {(pageType === PageType.LOGIN) ? 'Login' : 'Sign Up'}
+                        </Button>
+                        <button type='submit' onClick={handleSubmit} className='bg-indigo-500 rounded px-3 py-2 hover:bg-indigo-600 text-white'>
                             {(pageType === PageType.LOGIN) ? 'Login' : 'Sign Up'} 
                         </button>
                         { errors.api && <p className='text-sm text-red-500 text-medium'>{errors.api}</p> }
