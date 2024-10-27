@@ -141,9 +141,6 @@ const Authentication = ({pageType}) =>{
                         <Button onClick={handleSubmit}>
                             {(pageType === PageType.LOGIN) ? 'Login' : 'Sign Up'}
                         </Button>
-                        <button type='submit' onClick={handleSubmit} className='bg-indigo-500 rounded px-3 py-2 hover:bg-indigo-600 text-white'>
-                            {(pageType === PageType.LOGIN) ? 'Login' : 'Sign Up'} 
-                        </button>
                         { errors.api && <p className='text-sm text-red-500 text-medium'>{errors.api}</p> }
                     </form>
                 </div>
