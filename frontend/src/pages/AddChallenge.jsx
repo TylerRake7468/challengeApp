@@ -1,15 +1,23 @@
 import { useState } from "react"
 import Button from "../elements/Button"
 import Datepicker from "react-tailwindcss-datepicker";
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
+import QuillToolbar from "../components/EditorToolbar";
 
 const AddChallenge = () =>{
     const MIN_DATE = new Date();
     const [title, setTitle] = useState('')
+    const [description, setDescription] = useState('')
     const [value, setValue] = useState({ 
         startDate: null, 
         endDate: null
     });
     const handleTitleChange = (e) =>{
+        setTitle(e.target.value)
+    }
+
+    const handleChangeDescription = (e) =>{
         setTitle(e.target.value)
     }
     const handleSubmit = (e) =>{
@@ -36,7 +44,18 @@ const AddChallenge = () =>{
                         value={value} 
                         onChange={newValue => setValue(newValue)}
                     />
-                
+                    <ReactQuill theme="snow" value={description} onChange={handleChangeDescription} />
+                    <div className="text-editor">
+                        <EditorToolbar />
+                        <ReactQuill
+                            theme="snow"
+                            value={description}
+                            onChange={handleChangeDescription}
+                            placeholder={"Write something awesome..."}
+                            modules={modules}
+                            formats={formats}
+                        />
+                    </div>
                     <Button type="submit">Add Challenge</Button>
                 </form>
 
