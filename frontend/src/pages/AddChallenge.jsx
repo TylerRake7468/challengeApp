@@ -3,7 +3,7 @@ import Button from "../elements/Button"
 import Datepicker from "react-tailwindcss-datepicker";
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
-import QuillToolbar from "../components/EditorToolbar";
+import { EditorToolbar, formats, modules } from "../components/EditorToolbar";
 
 const AddChallenge = () =>{
     const MIN_DATE = new Date();

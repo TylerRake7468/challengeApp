@@ -33,23 +33,6 @@ function redoChange() {
   this.quill.history.redo();
 }
 
-// Add sizes to whitelist and register them
-const Size = Quill.import("formats/size");
-Size.whitelist = ["extra-small", "small", "medium", "large"];
-Quill.register(Size, true);
-
-// Add fonts to whitelist and register them
-const Font = Quill.import("formats/font");
-Font.whitelist = [
-  "arial",
-  "comic-sans",
-  "courier-new",
-  "georgia",
-  "helvetica",
-  "lucida"
-];
-Quill.register(Font, true);
-
 // Modules object for setting up the Quill editor
 export const modules = {
   toolbar: {
@@ -89,23 +72,9 @@ export const formats = [
 ];
 
 // Quill Toolbar component
-export const QuillToolbar = () => (
+export const EditorToolbar = () => (
   <div id="toolbar">
     <span className="ql-formats">
-      <select className="ql-font" defaultValue="arial">
-        <option value="arial">Arial</option>
-        <option value="comic-sans">Comic Sans</option>
-        <option value="courier-new">Courier New</option>
-        <option value="georgia">Georgia</option>
-        <option value="helvetica">Helvetica</option>
-        <option value="lucida">Lucida</option>
-      </select>
-      <select className="ql-size" defaultValue="medium">
-        <option value="extra-small">Size 1</option>
-        <option value="small">Size 2</option>
-        <option value="medium">Size 3</option>
-        <option value="large">Size 4</option>
-      </select>
       <select className="ql-header" defaultValue="3">
         <option value="1">Heading</option>
         <option value="2">Subheading</option>
@@ -156,4 +125,4 @@ export const QuillToolbar = () => (
   </div>
 );
 
-export default QuillToolbar;
+export default EditorToolbar;
