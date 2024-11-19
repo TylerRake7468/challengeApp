@@ -30,7 +30,7 @@ const AddChallenge = () =>{
         if(!cookies.jwt){
             navigate("/")
         }
-    })
+    },[])
     const handleTitleChange = (e) =>{
         console.log("Title::::", e.target.value)
         setTitle(e.target.value)

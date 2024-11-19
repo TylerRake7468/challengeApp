@@ -9,9 +9,6 @@ module Api
                 @challenges = Challenge.all
                 render json: @challenges
             end
-            
-            def new
-            end
 
             def create
                 @challenge = current_user.challenges.build(challenge_params)
@@ -47,6 +44,12 @@ module Api
                 else
                     render json: {message: "Failed to delete challenge", data: challenge.errors}
                 end  
+            end
+
+            def active_and_upcoming
+                @active = Challenge.active
+                @upcoming = Challenge.upcoming
+                render json: {active: @active, upcoming: @upcoming}
             end
 
             private

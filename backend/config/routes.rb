@@ -14,7 +14,11 @@ Rails.application.routes.draw do
 
   namespace :api do
     namespace :v1 do
-      resources :challenges
+      resources :challenges do
+        collection do
+          get :active_and_upcoming
+        end
+      end
     end
   end
 
